@@ -1,0 +1,11 @@
+{
+  "uuid": "promptkey@promptkey",
+  "name": "PromptKey",
+  "description": "Execute reusable AI prompts with global keyboard shortcuts.",
+  "shell-version": ["45", "46", "47", "48", "49", "50"],
+  "url": "https://github.com/promptkey/promptkey",
+  "settings-schema": "org.gnome.shell.extensions.promptkey",
+  "gettext-domain": "promptkey@promptkey",
+  "session-modes": ["user"],
+  "version": 8
+}

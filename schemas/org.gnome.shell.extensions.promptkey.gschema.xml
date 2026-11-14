@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="promptkey">
+  <schema id="org.gnome.shell.extensions.promptkey" path="/org/gnome/shell/extensions/promptkey/">
+
+    <key name="prompts" type="s">
+      <default>""</default>
+      <summary>Prompt definitions</summary>
+      <description>JSON array of prompt objects. Empty means use built-in defaults.</description>
+    </key>
+
+    <key name="ai-profiles" type="s">
+      <default>"[]"</default>
+      <summary>AI provider profiles</summary>
+      <description>JSON array of AI profile objects.</description>
+    </key>
+
+    <key name="default-prompt-id" type="s">
+      <default>"default"</default>
+      <summary>Default prompt ID</summary>
+    </key>
+
+    <key name="default-profile-id" type="s">
+      <default>""</default>
+      <summary>Default AI profile ID</summary>
+    </key>
+
+    <key name="last-prompt-id" type="s">
+      <default>""</default>
+      <summary>Last selected prompt ID</summary>
+      <description>Restored when opening via the global shortcut. Empty means use the first enabled prompt.</description>
+    </key>
+
+    <key name="close-on-escape" type="b">
+      <default>true</default>
+      <summary>Close prompt window on Escape</summary>
+    </key>
+
+    <key name="auto-copy-response" type="b">
+      <default>true</default>
+      <summary>Automatically copy AI response</summary>
+      <description>When enabled, copy the response to the clipboard as soon as it arrives.</description>
+    </key>
+
+    <key name="open-hotkey" type="as">
+      <default>["&lt;Super&gt;&lt;Alt&gt;a"]</default>
+      <summary>Open PromptKey</summary>
+      <description>Single global shortcut that opens the prompt window.</description>
+    </key>
+
+  </schema>
+</schemalist>

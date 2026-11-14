@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PromptKey UI preview</title>
+  <style>
+    :root {
+      --bg: #2b2b2b;
+      --panel: #3a3a3a;
+      --muted: rgba(255, 255, 255, 0.55);
+      --text: rgba(255, 255, 255, 0.92);
+      --input: rgba(0, 0, 0, 0.28);
+      --chip: rgba(255, 255, 255, 0.08);
+      --blue: rgba(53, 132, 228, 0.9);
+      --blue-soft: rgba(53, 132, 228, 0.35);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px 16px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      font: 14px/1.4 system-ui, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 50% 40%, #3a3a3a 0%, #1c1c1c 55%, #111 100%);
+    }
+    .note {
+      max-width: 440px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .dialog {
+      width: 440px;
+      padding: 16px;
+      border-radius: 16px;
+      background: var(--panel);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+    }
+    .bar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .select {
+      appearance: none;
+      border: 0;
+      border-radius: 6px;
+      background: var(--chip);
+      color: var(--text);
+      font-weight: 600;
+      padding: 6px 10px;
+      text-align: left;
+    }
+    .select.prompt { flex: 1; }
+    .select:focus { outline: 2px solid var(--blue-soft); }
+    .manage {
+      width: 32px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .template {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 10px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.22);
+    }
+    .blank {
+      min-width: 72px;
+      border: 0;
+      border-radius: 4px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.06);
+      color: #fff;
+      padding: 2px 6px;
+    }
+    .blank.block {
+      width: 100%;
+      min-height: 40px;
+      padding: 4px 8px;
+      border-bottom: 0;
+      border-radius: 6px;
+      background: var(--input);
+      resize: vertical;
+    }
+    .run {
+      width: 100%;
+      border: 0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .run:disabled {
+      background: rgba(53, 132, 228, 0.28);
+      color: rgba(255, 255, 255, 0.45);
+      cursor: not-allowed;
+    }
+    .response {
+      margin-top: 8px;
+      padding: 8px 10px 10px;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.22);
+      display: none;
+    }
+    .response.show { display: block; }
+    .response-header {
+      display: flex;
+      justify-content: flex-end;
+      height: 18px;
+    }
+    .copy {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0 2px;
+    }
+    .response-scroll {
+      height: 200px;
+      overflow: auto;
+      color: rgba(255, 255, 255, 0.9);
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <p class="note">
+    Local UI preview only. Layout/CSS for PromptKey — not the live GNOME extension.
+    When this looks right, run <code>./install.sh</code> and log out/in on Wayland.
+  </p>
+
+  <div class="dialog" id="app">
+    <div class="bar">
+      <select class="select prompt" id="prompt">
+        <option>Default</option>
+        <option>Make Formal</option>
+        <option>Check Grammar</option>
+        <option>True or False</option>
+        <option>Simplify</option>
+        <option>Summarize</option>
+        <option>Translate</option>
+        <option>Explain</option>
+      </select>
+      <select class="select" id="provider">
+        <option>Groq</option>
+        <option>OpenAI</option>
+      </select>
+      <button class="manage" type="button" title="Manage">⚙</button>
+    </div>
+
+    <div class="template" id="template"></div>
+
+    <button class="run" id="run" type="button" disabled>Run</button>
+
+    <div class="response" id="responseBox">
+      <div class="response-header">
+        <button class="copy" id="copy" type="button" title="Copy">⧉</button>
+      </div>
+      <div class="response-scroll" id="response"></div>
+    </div>
+  </div>
+
+  <script>
+    const PROMPTS = {
+      Default: 'Help me with the following request.\n\n{{request}}',
+      'Make Formal': 'Rewrite the following text in a formal tone.\n\n{{text}}',
+      'Check Grammar': 'Check the grammar and spelling of the following text and provide a corrected version.\n\n{{text}}',
+      'True or False': 'Determine whether the following statement is true or false. Explain briefly.\n\n{{statement}}',
+      Simplify: 'Simplify the following text so it is easier to understand.\n\n{{text}}',
+      Summarize: 'Summarize the following text concisely.\n\n{{text}}',
+      Translate: 'Translate the following text to {{language}}.\n\n{{text}}',
+      Explain: 'Explain {{concept}} clearly and simply.',
+    };
+
+    const promptEl = document.getElementById('prompt');
+    const templateEl = document.getElementById('template');
+    const runEl = document.getElementById('run');
+    const responseBox = document.getElementById('responseBox');
+    const responseEl = document.getElementById('response');
+
+    function parseTemplate(instruction) {
+      const parts = [];
+      const re = /\{\{\s*([a-zA-Z0-9_-]+)\s*\}\}/g;
+      let last = 0;
+      let m;
+      while ((m = re.exec(instruction)) !== null) {
+        if (m.index > last)
+          parts.push({ type: 'text', value: instruction.slice(last, m.index) });
+        parts.push({ type: 'filler', name: m[1] });
+        last = m.index + m[0].length;
+      }
+      if (last < instruction.length)
+        parts.push({ type: 'text', value: instruction.slice(last) });
+      return parts;
+    }
+
+    function rebuild() {
+      const instruction = PROMPTS[promptEl.value] || '';
+      const parts = parseTemplate(instruction);
+      templateEl.innerHTML = '';
+      parts.forEach((part, i) => {
+        if (part.type === 'text') {
+          part.value.split('\n').forEach((line, li) => {
+            if (li > 0) templateEl.appendChild(document.createElement('br'));
+            if (line) templateEl.appendChild(document.createTextNode(line));
+          });
+          return;
+        }
+        const prev = parts[i - 1];
+        const next = parts[i + 1];
+        const block =
+          (!prev || (prev.type === 'text' && /\n\s*$/.test(prev.value))) &&
+          (!next || (next.type === 'text' && /^\s*\n/.test(next.value)));
+        const input = document.createElement(block ? 'textarea' : 'input');
+        input.className = block ? 'blank block' : 'blank';
+        input.placeholder = part.name;
+        if (!block) input.type = 'text';
+        input.addEventListener('input', updateRun);
+        templateEl.appendChild(input);
+      });
+      updateRun();
+      responseBox.classList.remove('show');
+    }
+
+    function updateRun() {
+      const blanks = [...templateEl.querySelectorAll('.blank')];
+      runEl.disabled = blanks.some(el => !el.value.trim());
+    }
+
+    runEl.addEventListener('click', () => {
+      const sample = Array.from({ length: 40 }, (_, i) =>
+        `Line ${i + 1}: sample response so you can check the 200px scroll area.`
+      ).join('\n');
+      responseEl.textContent = sample;
+      responseBox.classList.add('show');
+    });
+
+    document.getElementById('copy').addEventListener('click', async () => {
+      await navigator.clipboard.writeText(responseEl.textContent);
+    });
+
+    promptEl.addEventListener('change', rebuild);
+    rebuild();
+  </script>
+</body>
+</html>
