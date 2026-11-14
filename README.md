@@ -2,8 +2,6 @@
 
 GNOME Shell extension that runs reusable AI prompts from global keyboard shortcuts.
 
-**UUID:** `promptkey@drowhann.github.io`  
-**Repo:** https://github.com/drowhann/prompt-key  
 **License:** [GPL-2.0-or-later](LICENSE)
 
 ## Requirements
@@ -18,13 +16,36 @@ GNOME Shell extension that runs reusable AI prompts from global keyboard shortcu
 
 Once published, install from [extensions.gnome.org](https://extensions.gnome.org/) by searching for **PromptKey**, or use GNOME Extensions / Extension Manager.
 
-### From source
+### From GitHub (no website needed)
+
+You can install without visiting extensions.gnome.org.
+
+**Option A - release zip**
+
+1. Download the latest `.shell-extension.zip` from [Releases](https://github.com/drowhann/prompt-key/releases).
+2. Install it:
 
 ```bash
+gnome-extensions install promptkey@drowhann.github.io.shell-extension.zip
+```
+
+3. Enable it (Extensions app, or):
+
+```bash
+gnome-extensions enable promptkey@drowhann.github.io
+```
+
+4. **Log out and log back in** once (required on Wayland so GNOME Shell discovers the extension).
+
+**Option B - from source**
+
+```bash
+git clone https://github.com/drowhann/prompt-key.git
+cd prompt-key
 ./install.sh
 ```
 
-Then **log out and log back in** once (required on Wayland so GNOME Shell discovers the new extension).
+Then log out and log back in once.
 
 Open settings after login:
 
@@ -37,16 +58,8 @@ Or use **Extensions → PromptKey → Settings**.
 If you previously installed the old UUID (`promptkey@promptkey`), remove it first:
 
 ```bash
-make uninstall
+rm -rf ~/.local/share/gnome-shell/extensions/promptkey@promptkey
 ```
-
-### Package a zip for upload
-
-```bash
-make zip
-```
-
-This builds `promptkey@drowhann.github.io.shell-extension.zip` for [extensions.gnome.org/upload](https://extensions.gnome.org/upload/).
 
 ## Usage
 
@@ -82,40 +95,4 @@ Clipboard: PromptKey may write the AI response to the clipboard (Copy button, or
 
 ## Development
 
-```bash
-make install   # sync into ~/.local/share/gnome-shell/extensions/
-make reload    # re-enable; on Wayland, log out/in for JS changes
-make prefs     # open preferences
-make status    # extension info
-make zip       # build upload zip
-```
-
-See [prd.md](prd.md) for product scope and acceptance criteria.
-
-## Publishing
-
-### One-time setup (GitHub Actions → EGO)
-
-1. Create an account at https://extensions.gnome.org/ (username + password; OAuth-only may not work for the API).
-2. In the GitHub repo: **Settings → Secrets and variables → Actions**, add:
-   - `EGO_USERNAME` - your EGO username
-   - `EGO_PASSWORD` - your EGO password
-3. Push these workflow files to `main`, then release with a tag:
-
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-```
-
-That runs [.github/workflows/release.yml](.github/workflows/release.yml): builds the zip, creates a GitHub Release, and uploads to EGO via [scripts/ego-upload.sh](scripts/ego-upload.sh).
-
-You can also run the workflow manually: **Actions → Release → Run workflow**.
-
-EGO still reviews each upload by hand. Screenshots are added on your extension page after the first listing exists.
-
-### Manual upload
-
-```bash
-make zip
-# then https://extensions.gnome.org/upload/
-```
+Contributor and publishing notes live in [docs/development.md](docs/development.md).

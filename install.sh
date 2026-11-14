@@ -10,6 +10,7 @@ mkdir -p "${EXT_DIR}"
 rsync -a --delete \
   --exclude '.git/' \
   --exclude 'prd.md' \
+  --exclude 'docs/' \
   --exclude '.cursor/' \
   --exclude '*.plan.md' \
   --exclude 'scripts/' \
