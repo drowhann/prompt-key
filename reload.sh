@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-UUID="promptkey@promptkey"
+UUID="promptkey@drowhann.github.io"
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 
 "${ROOT}/install.sh"

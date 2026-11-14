@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-UUID="promptkey@promptkey"
+UUID="promptkey@drowhann.github.io"
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 EXT_DIR="${HOME}/.local/share/gnome-shell/extensions/${UUID}"
 
@@ -18,6 +18,7 @@ rsync -a --delete \
   --exclude 'install.sh' \
   --exclude 'reload.sh' \
   --exclude 'Makefile' \
+  --exclude '*.zip' \
   "${ROOT}/" "${EXT_DIR}/"
 glib-compile-schemas "${EXT_DIR}/schemas"
 

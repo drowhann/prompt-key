@@ -191,11 +191,13 @@ No backend server.
 ## 10. Project Structure
 
 ```text
-promptkey/
-├── metadata.json
+prompt-key/
+├── metadata.json          # uuid: promptkey@drowhann.github.io
 ├── extension.js
 ├── prefs.js
 ├── stylesheet.css
+├── LICENSE                # GPL-2.0-or-later
+├── schemas/
 ├── src/
 │   ├── ui/
 │   │   └── prompt-window.js
@@ -212,6 +214,12 @@ promptkey/
 │       └── prompt-composer.js
 └── README.md
 ```
+
+**Distribution**
+
+- Public repo: https://github.com/drowhann/prompt-key
+- Package with `make zip` and submit to https://extensions.gnome.org/upload/
+- License must remain GPL-compatible for EGO distribution
 
 Adjust the structure as necessary for GNOME Shell compatibility.
 
