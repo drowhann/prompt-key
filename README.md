@@ -63,15 +63,7 @@ rm -rf ~/.local/share/gnome-shell/extensions/promptkey@promptkey
 
 ## Usage
 
-| Prompt | Shortcut |
-|---|---|
-| Default | Super + Alt + A |
-| Make Formal | Super + Alt + F |
-| Check Grammar | Super + Alt + G |
-| True or False | Super + Alt + T |
-| Simplify | Super + Alt + S |
-
-Open PromptKey with the global open shortcut (default **Super + Alt + A**), or with a prompt-specific shortcut.
+Open PromptKey with the global shortcut (default **Super + Alt + A**). First open uses the first enabled prompt; later opens restore the last prompt you selected.
 
 In the prompt window:
 
@@ -85,7 +77,7 @@ In the prompt window:
 
 1. Open preferences (`gnome-extensions prefs promptkey@drowhann.github.io`).
 2. Add an AI profile (provider, model, API key, optional base URL for compatible endpoints).
-3. Create or edit prompts and assign shortcuts as needed.
+3. Create or edit prompts, and change the open shortcut on the General page if needed.
 
 ## Privacy
 
