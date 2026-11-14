@@ -1,7 +1,7 @@
 {
   "uuid": "promptkey@drowhann.github.io",
   "name": "PromptKey",
-  "description": "Execute reusable AI prompts with global keyboard shortcuts.\n\nConfigure prompts and AI provider profiles (Gemini, Groq, OpenAI, or OpenAI-compatible endpoints). API keys stay on your machine in GSettings and are only sent to the provider you choose.",
+  "description": "Execute reusable AI prompts with global keyboard shortcuts.\n\nConfigure prompts and AI provider profiles (Gemini, Groq, OpenAI, or OpenAI-compatible endpoints). API keys stay on your machine in GSettings and are only sent to the provider you choose.\n\nClipboard: PromptKey can write the AI response to the clipboard when you click Copy, or when auto-copy is enabled in preferences. It never reads the clipboard and never sends clipboard data to any service.",
   "shell-version": ["45", "46", "47", "48", "49", "50"],
   "url": "https://github.com/drowhann/prompt-key",
   "settings-schema": "org.gnome.shell.extensions.promptkey",

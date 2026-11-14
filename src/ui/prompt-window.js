@@ -676,6 +676,8 @@ class PromptWindow extends ModalDialog.ModalDialog {
         }
     }
 
+    // Write-only clipboard use for Copy / optional auto-copy. Declared in metadata.json.
+    // Never reads the clipboard; never sends clipboard contents to any network endpoint.
     _writeClipboard(text) {
         St.Clipboard.get_default().set_text(St.ClipboardType.CLIPBOARD, text);
     }

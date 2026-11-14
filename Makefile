@@ -20,7 +20,6 @@ status:
 	gnome-extensions info $(UUID) || true
 
 zip:
-	glib-compile-schemas schemas
 	rm -f $(ZIP)
 	zip -r $(ZIP) \
 		extension.js \
@@ -28,10 +27,9 @@ zip:
 		stylesheet.css \
 		metadata.json \
 		schemas/org.gnome.shell.extensions.promptkey.gschema.xml \
-		schemas/gschemas.compiled \
 		src \
 		LICENSE \
-		-x '*.git*' '*~' '*.swp'
+		-x '*.git*' '*~' '*.swp' 'schemas/gschemas.compiled'
 	@echo "Built $(ZIP)"
 	@unzip -l $(ZIP) | head -40
 

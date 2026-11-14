@@ -202,6 +202,19 @@ export default class PromptKeyPreferences extends ExtensionPreferences {
         window.add(this._buildPromptsPage());
         window.add(this._buildProvidersPage());
         window.add(this._buildGeneralPage());
+
+        window.connect('close-request', () => {
+            this._settings = null;
+            this._storage = null;
+            this._promptManager = null;
+            this._providerManager = null;
+            this._window = null;
+            this._promptsGroup = null;
+            this._promptRows = null;
+            this._profilesGroup = null;
+            this._profileRows = null;
+            this._shortcutRow = null;
+        });
     }
 
     _buildPromptsPage() {

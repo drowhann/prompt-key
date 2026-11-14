@@ -78,6 +78,8 @@ In the prompt window:
 
 API keys are stored locally in GSettings and are only sent to the configured provider endpoint. They are never logged.
 
+Clipboard: PromptKey may write the AI response to the clipboard (Copy button, or optional auto-copy). It does not read the clipboard and does not send clipboard data anywhere.
+
 ## Development
 
 ```bash

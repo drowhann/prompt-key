@@ -16,6 +16,7 @@ export default class PromptKeyExtension extends Extension {
         this._promptManager = new PromptManager(this._storage);
         this._providerManager = new ProviderManager(this._storage);
         this._window = null;
+        this._windowClosedId = 0;
         this._hotkeyBound = false;
 
         this._registerKeybinding();
@@ -32,16 +33,25 @@ export default class PromptKeyExtension extends Extension {
         }
 
         this._unregisterKeybinding();
-
-        if (this._window) {
-            this._window.destroy();
-            this._window = null;
-        }
+        this._destroyWindow();
 
         this._promptManager = null;
         this._providerManager = null;
         this._storage = null;
         this._settings = null;
+    }
+
+    _destroyWindow() {
+        if (!this._window)
+            return;
+
+        if (this._windowClosedId) {
+            this._window.disconnect(this._windowClosedId);
+            this._windowClosedId = 0;
+        }
+
+        this._window.destroy();
+        this._window = null;
     }
 
     _unregisterKeybinding() {
@@ -91,10 +101,7 @@ export default class PromptKeyExtension extends Extension {
     }
 
     _openPromptWindow() {
-        if (this._window) {
-            this._window.close();
-            this._window = null;
-        }
+        this._destroyWindow();
 
         const promptId = this._resolvePromptId();
 
@@ -108,7 +115,8 @@ export default class PromptKeyExtension extends Extension {
             openPreferences: () => this.openPreferences(),
         });
 
-        this._window.connect('closed', () => {
+        this._windowClosedId = this._window.connect('closed', () => {
+            this._windowClosedId = 0;
             this._window = null;
         });
 
