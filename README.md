@@ -67,11 +67,12 @@ Open PromptKey with the global shortcut (default **Super + Alt + A**). First ope
 
 In the prompt window:
 
-- Enter optional extra context
-- Switch prompt / AI profile with the selector buttons
-- **Ctrl+Enter** to execute
-- **Escape** to close
-- **Copy response** copies the AI output
+- Fill in the blanks; **Enter** jumps to the next blank and runs from the last one
+- **Ctrl+Enter** runs from anywhere
+- **Ctrl+1…9** switches prompt; the selector buttons switch prompt / AI profile
+- **Ctrl+,** opens settings
+- **Escape** closes
+- The response is copied to the clipboard automatically (configurable); **Copy** copies it again
 
 ## Configure
 
